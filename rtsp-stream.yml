@@ -1,0 +1,21 @@
+version: 1.0
+endpoints:
+  start:
+    enabled: true
+  static:
+    enabled: true
+  stop:
+    enabled: true
+    secret: macilaci
+  list:
+    enabled: true
+    secret: macilaci
+
+listen:
+  - alias: sample
+    uri: 
+    enabled: false
+    
+  - alias: sample2 
+    uri:
+    enabled: false
