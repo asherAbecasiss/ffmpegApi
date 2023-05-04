@@ -13,7 +13,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-var PATH string = "/"
+var PATH string = "/feeds/video"
 
 func InitConfig() *Specification {
 	var s Specification
@@ -48,16 +48,17 @@ func main() {
 
 	spec := InitConfig()
 	var streaml []streamer.Stream
+
 	for _, item := range spec.EndpointYML.Listen {
 		stream, _ := streamer.NewStream(
 			item.Uri,
-			"/path",
+			PATH,
 			true,
 			true,
 			streamer.ProcessLoggingOpts{
 				Enabled:    true,
 				Compress:   true,
-				Directory:  "/path",
+				Directory:  PATH,
 				MaxAge:     10,
 				MaxBackups: 100,
 				MaxSize:    1000,
@@ -66,7 +67,11 @@ func main() {
 		)
 		streaml = append(streaml, *stream)
 	}
-	server := GetNewApiServer(":8080", streaml)
+
+	server := GetNewApiServer(":8081", streaml)
+
+
+
 
 	done := server.ExitPreHook()
 	go func() {
