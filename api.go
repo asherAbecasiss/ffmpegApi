@@ -42,56 +42,65 @@ func (s *ApiServer) Run() {
 }
 
 func (s *ApiServer) StartRtsp(w http.ResponseWriter, r *http.Request) {
+	var folderInfoList []FolderInfo
 
 	for i, _ := range s.Stream {
-		processCommands := []string{
-			"ffmpeg",
-			"-fflags",
-			"nobuffer",
-			"-rtsp_transport",
-			"tcp",
-			"-i",
-			s.Stream[i].CMD.Args[7],
-			"-c:v",
-			"libx264",
-			"-movflags",
-			"frag_keyframe+empty_moov",
+		// processCommands := []string{
+		// 	"ffmpeg",
+		// 	"-fflags",
+		// 	"nobuffer",
+		// 	"-rtsp_transport",
+		// 	"tcp",
+		// 	"-i",
+		// 	s.Stream[i].CMD.Args[7],
+		// 	"-c:v",
+		// 	"libx264",
+		// 	"-movflags",
+		// 	"frag_keyframe+empty_moov",
 
-			"-an",
-			"-hls_flags",
-			"delete_segments+append_list",
-			"-f",
-			"segment",
-			"-segment_list_flags",
-			"live",
+		// 	"-an",
+		// 	"-hls_flags",
+		// 	"delete_segments+append_list",
+		// 	"-f",
+		// 	"segment",
+		// 	"-segment_list_flags",
+		// 	"live",
 
-			"-segment_time",
-			"4",
+		// 	"-segment_time",
+		// 	"4",
 
-			"-segment_list_size",
-			"3",
+		// 	"-segment_list_size",
+		// 	"3",
 
-			"-segment_format",
-			"mpegts",
-			"-segment_list",
-			s.Stream[i].CMD.Args[31],
-			"-segment_list_type",
-			"m3u8",
-			"-segment_list_entry_prefix",
-			s.Stream[i].CMD.Args[30],
-		}
+		// 	"-segment_format",
+		// 	"mpegts",
+		// 	"-segment_list",
+		// 	s.Stream[i].CMD.Args[31],
+		// 	"-segment_list_type",
+		// 	"m3u8",
+		// 	"-segment_list_entry_prefix",
+		// 	s.Stream[i].CMD.Args[30],
+		// }
 
-		s.Stream[i].CMD.Args = processCommands
+		// s.Stream[i].CMD.Args = processCommands
 
 		s.Stream[i].Start().Wait()
 
-		logrus.Infof("folder name stream  %s | ", s.Stream[i].ID)
 		// logrus.Infof("folder name stream  %s | ", s.Stream[i].Logger)
 		fmt.Println(s.Stream[i].CMD.Args)
 
-		WriteJson(w, http.StatusOK, s.Stream[i].ID)
+		folderInfo := FolderInfo{
+			FolderName: s.Stream[i].ID,
+			Url:        s.Stream[i].OriginalURI,
+			Count:      "0",
+			MacAdd:     find(s.Stream[i].OriginalURI),
+		}
+		folderInfoList = append(folderInfoList, folderInfo)
+
 	}
 
+	logrus.Infof("folder name stream  %s | ", folderInfoList)
+	WriteJson(w, http.StatusOK, folderInfoList)
 }
 func (s *ApiServer) StopRtsp(w http.ResponseWriter, r *http.Request) {
 

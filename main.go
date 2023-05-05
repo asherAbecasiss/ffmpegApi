@@ -70,8 +70,7 @@ func main() {
 
 	server := GetNewApiServer(":8081", streaml)
 
-
-
+	server.Spec = spec
 
 	done := server.ExitPreHook()
 	go func() {

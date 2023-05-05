@@ -52,6 +52,7 @@ type ApiServer struct {
 	PortNumber string
 	Stream     []streamer.Stream
 	Server     *http.Server
+	Spec       *Specification
 }
 
 type Specification struct {
@@ -64,12 +65,14 @@ type EndpointSetting struct {
 	Secret  string `yml:"secret"`
 }
 type ListenSetting struct {
-	Enabled bool   `yaml:"enabled"`
-	Uri     string `yaml:"uri"`
-	Alias   string `yaml:"alias"`
+	Enabled    bool   `yaml:"enabled"`
+	Uri        string `yaml:"uri"`
+	Alias      string `yaml:"alias"`
+	MacAddress string `yaml:"macAddress"`
 }
 type EndpointYML struct {
-	Version   string `yaml:"version"`
+	Version string `yaml:"version"`
+
 	Endpoints struct {
 		Start  EndpointSetting `yaml:"start"`
 		Stop   EndpointSetting `yaml:"stop"`
@@ -77,4 +80,11 @@ type EndpointYML struct {
 		Static EndpointSetting `yaml:"static"`
 	} `yaml:"endpoints"`
 	Listen []ListenSetting `yaml:"listen"`
+}
+
+type FolderInfo struct {
+	FolderName string `json:"foldername"`
+	MacAdd     string `json:"macadress"`
+	Count      string `json:"count"`
+	Url        string `json:"url"`
 }

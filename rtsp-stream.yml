@@ -13,8 +13,10 @@ endpoints:
 
 listen:
   - alias: camera1
-    uri: "rtsp://admin:123456@192.168.14.5:554/profile1"
+    uri: "rtsp://admin:123456@10.100.102.50:554/profile1"
+    macAddress: "80647AFFF2A1"
     enabled: false
   - alias: camera2
-    uri: "rtsp://admin:123456@192.168.14.33:554/profile1"
+    macAddress: "80647AFFF299"
+    uri: "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mp4"
     enabled: false

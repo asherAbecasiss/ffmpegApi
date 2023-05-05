@@ -28,3 +28,13 @@ func remove(s []string, r string) []string {
 	}
 	return s
 }
+
+func find(url string) string {
+	spec := InitConfig()
+	for _, v := range spec.EndpointYML.Listen {
+		if v.Uri == url {
+			return v.MacAddress
+		}
+	}
+	return ""
+}
